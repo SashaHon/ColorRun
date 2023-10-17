@@ -1,10 +1,7 @@
 import "./App.css";
-import io from "socket.io-client";
 import Board from "components/board/Board";
-
 import React, { useEffect, useState } from "react";
-
-const socket = io.connect("http://localhost:3001");
+import socket from "utils/socket";
 //we can create state have there value from the button and pass there data which we can to re-use later
 function App() {
   const [message, setMessage] = useState("");
@@ -20,6 +17,12 @@ function App() {
       setMessageReceived(data.message);
     });
   }, [socket]);
+
+  // useEffect(() => {
+  //   socket.on("create_player", (playerData) => {
+  //     alert(playerData);
+  //   });
+  // }, [socket]);
 
   return (
     <div className="App">
