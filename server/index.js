@@ -6,6 +6,7 @@ const cors = require("cors");
 const { playersDataMock } = require("./data/players-mock");
 const state = require("./state/state");
 const { stat } = require("fs");
+const { calc_movement, getPlayerFromState } = require("./server-helpers");
 
 app.use(cors());
 
@@ -17,8 +18,8 @@ const io = new Server(server, {
   },
 });
 
-function assignNextPlayerId(playersArr, soket) {
-  //checks which next player in data has no soket id and assigns it;
+function assignNextPlayerId(playersArr, socket) {
+  //checks which next player in data has no socket id and assigns it;
   let newPlayer = playersArr.find((player) => {
     return !player.id;
   });
@@ -28,7 +29,7 @@ function assignNextPlayerId(playersArr, soket) {
   //   "1 this is players mock:",
   //   playersArr
   // );
-  newPlayer.id = soket.id;
+  newPlayer.id = socket.id;
   return newPlayer;
 }
 
@@ -43,14 +44,22 @@ function createPlayer(playersMockArr, socket) {
   return player.id;
 }
 
-function findPlayerIndex(array, socketId) {
+function getPlayerIndex(array, socketId) {
   return array.findIndex((player) => {
     return player.id === socketId;
   });
 }
 
+// function getPlayerFromState(id) {
+//   return state.players.find((el, i) => {
+//     if (el.id === id) {
+//       return el;
+//     }
+//   });
+// }
+
 function removePlayerFromState(socketId) {
-  let disconnectedPlayerId = findPlayerIndex(state.players, socketId);
+  let disconnectedPlayerId = getPlayerIndex(state.players, socketId);
   //console.log("before:", state.players);
   state.players = [
     ...state.players.slice(0, disconnectedPlayerId),
@@ -61,10 +70,10 @@ function removePlayerFromState(socketId) {
 
 function setPlayerIdToZeroInData(socketId) {
   //sets disconn Player Id to Null in Data
-  console.log("before:", playersDataMock);
-  let disconnectedPlayerId = findPlayerIndex(playersDataMock, socketId);
+  // console.log("before:", playersDataMock);
+  let disconnectedPlayerId = getPlayerIndex(playersDataMock, socketId);
   playersDataMock[disconnectedPlayerId].id = null;
-  console.log("after:", playersDataMock);
+  // console.log("after:", playersDataMock);
   // console.log("that disconn player:", playersDataMock[disconnectedPlayerId]);
   // console.log("diconnId:", disconnectedPlayerId);
 }
@@ -75,6 +84,19 @@ io.on("connection", (socket) => {
   const currentPlayerId = createPlayer(playersDataMock, socket);
   // console.log("state players after connection:", state.players);
   socket.emit("state_change", { ...state, currentPlayerId });
+  socket.emit("add_event_listeners", { currentPlayerId });
+
+  socket.on("is_moving", ({ movingDirection }) => {
+    let currPlayer = getPlayerFromState(state.players, socket.id);
+    calculateMovingLeft(currPlayer, movingDirection, socket);
+    // calc_movement({ id, movingDirection })
+    // console.log(top, left);
+  });
+
+  socket.on("end_moving", ({ isMoving }) => {
+    //stop calculating and rendering;
+    console.log(isMoving);
+  });
 
   socket.on("send_message", (data) => {
     // console.log("something!!!!");
@@ -83,6 +105,10 @@ io.on("connection", (socket) => {
 
     // socket.emit("message", { type: "helo" });
   });
+
+  // socket.on("move_left", (obj) => {
+  //   console.log(obj);
+  // });
 
   //!!!!!!!!!!!!
   //io.on disconnection should remove disconnected player from state.players.
@@ -101,3 +127,24 @@ io.on("connection", (socket) => {
 server.listen(3001, () => {
   console.log("SERVER IS RUNNING");
 });
+
+function calculateMovingLeft(currPlayer, movingDirection, socket) {
+  if (movingDirection === "ArrowLeft") {
+    console.log("moving left", currPlayer.x, currPlayer.y);
+    // console.log("curr player", currPlayer);
+    // currPlayer.x += 10;
+    // console.log(state);
+    // console.log(currPlayer);
+    // socket.emit("state_change", { ...state });
+    //calcFunc(x,y);
+    // do left calcs and do left constrain;
+  } else if (movingDirection === "ArrowRight") {
+    // do right calcs and do right constrain;
+  } else if (movingDirection === "ArrowUp") {
+    // do up calcs and do up constrain;
+  } else if (movingDirection === "ArrowDown") {
+    // do down calcs and do down constrain;
+  } else {
+    console.log("no such direction:", movingDirection);
+  }
+}
