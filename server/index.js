@@ -83,8 +83,7 @@ io.on("connection", (socket) => {
 
   const currentPlayerId = createPlayer(playersDataMock, socket);
   // console.log("state players after connection:", state.players);
-  socket.emit("state_change", { ...state, currentPlayerId });
-  socket.emit("add_event_listeners", { currentPlayerId });
+  socket.emit("user_connect", { ...state, currentPlayerId });
 
   socket.on("is_moving", ({ movingDirection }) => {
     let currPlayer = getPlayerFromState(state.players, socket.id);
@@ -93,10 +92,14 @@ io.on("connection", (socket) => {
     // console.log(top, left);
   });
 
-  socket.on("end_moving", ({ isMoving }) => {
+  socket.on("end_moving", ({ message }) => {
     //stop calculating and rendering;
-    console.log(isMoving);
+    console.log(message);
   });
+
+  let intervalId = setInterval(() => {
+    socket.emit("state_change", { ...state });
+  }, 100);
 
   socket.on("send_message", (data) => {
     // console.log("something!!!!");
@@ -132,9 +135,9 @@ function calculateMovingLeft(currPlayer, movingDirection, socket) {
   if (movingDirection === "ArrowLeft") {
     console.log("moving left", currPlayer.x, currPlayer.y);
     // console.log("curr player", currPlayer);
-    // currPlayer.x += 10;
-    // console.log(state);
-    // console.log(currPlayer);
+    currPlayer.x += 10;
+    console.log(state);
+    console.log(currPlayer);
     // socket.emit("state_change", { ...state });
     //calcFunc(x,y);
     // do left calcs and do left constrain;

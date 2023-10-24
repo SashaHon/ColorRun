@@ -30,12 +30,13 @@ export default function Board() {
   useEffect(() => {
     gameState.isMoving = false;
 
-    socket.on("state_change", (state) => {
+    socket.on("user_connect", (state) => {
       gameState = state;
 
       let currentPlayer = getCurrentPlayer(gameState);
       let { canvas, ctx } = getCtx(canvasRef.current);
       let nameLetters = getFirstNameLetters(currentPlayer);
+
       // console.log(ctx);
 
       const scaleFactor = window.devicePixelRatio;
@@ -44,33 +45,23 @@ export default function Board() {
       canvas.style.width = canvas.width / scaleFactor + "px";
       canvas.style.height = canvas.height / scaleFactor + "px";
 
-      draw(
-        ctx,
-        canvas,
-        currentPlayer.x,
-        currentPlayer.y,
-        currentPlayer.color,
-        nameLetters,
-        scaleFactor
-      )();
+      draw(ctx, canvas, currentPlayer)();
       ctx.imageSmoothingQuality = "high";
-    });
 
-    socket.on("add_event_listeners", ({ currentPlayerId }) => {
-      // let currentPlayer = gameState.players.find((player) => {
-      //   return (player.id = currentPlayerId);
-      // });
-
-      // const boundEventListener = handleKeyDown.bind(null, isMoving);
       document.addEventListener("keydown", handleKeyDown);
       document.addEventListener("keyup", handleKeyUp);
+    });
+
+    socket.on("state_change", (state) => {
+      gameState = state;
+      // console.log(state);
     });
   }, []); // empty arr means i subscribed to "state_change" only one time, so that it always listens to it. no need to resubscribe.
 
   return <canvas ref={canvasRef} width="600" height="600" id="board" />;
 }
 
-function drawCircle(ctx, x, y, color, nameLetters, scaleFactor) {
+function drawCircle(ctx, x, y, color, nameLetters) {
   //creating a circle and defining it's color
   ctx.beginPath();
   ctx.arc(x, y, 32, 0, 2 * Math.PI);
@@ -84,29 +75,25 @@ function drawCircle(ctx, x, y, color, nameLetters, scaleFactor) {
   return ctx;
 }
 
-const draw = (ctx, canvas, x, y, color, nameLetters) => () => {
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // console.log(gameState);
-
-  drawCircle(ctx, x, y, color, nameLetters);
-  // requestAnimationFrame(draw(ctx, canvas));
+const draw = (ctx, canvas, currentPlayer) => () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let nameLetters = getFirstNameLetters;
+  console.log({ gameState });
+  drawCircle(
+    ctx,
+    currentPlayer.x,
+    currentPlayer.y,
+    currentPlayer.color,
+    nameLetters
+  );
+  requestAnimationFrame(draw(ctx, canvas, currentPlayer));
 };
 
 function handleKeyDown(e) {
   const keyDirectionString = checkArrowDirection(e.key);
   if (!keyDirectionString) {
-    // console.log("not arrow");
     return;
   }
-  if (gameState.isMoving === true) {
-    // console.log("is moving");
-    return;
-  }
-  // console.log(
-  //   "isMoving=== false, so it's the first move and we do socket emit"
-  // );
-  gameState.isMoving = !gameState.isMoving;
-
   socket.emit(`is_moving`, {
     movingDirection: keyDirectionString,
   });
@@ -123,6 +110,6 @@ function handleKeyUp(e) {
     return;
   }
   // console.log("KeyUP!!");
-  gameState.isMoving = !gameState.isMoving;
-  socket.emit("end_moving", { isMoving: gameState.isMoving });
+  // gameState.isMoving = !gameState.isMoving;
+  socket.emit("end_moving", { message: "stop moving!" });
 }
