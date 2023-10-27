@@ -7,7 +7,6 @@ import "../../helpers/board-helpers";
 import {
   getCtx,
   getCurrentPlayer,
-  getFirstNameLetters,
   checkArrowDirection,
 } from "../../helpers/board-helpers";
 
@@ -30,22 +29,19 @@ export default function Board() {
   useEffect(() => {
     gameState.isMoving = false;
 
-    socket.on("user_connect", (state) => {
-      gameState = state;
+    socket.on("user_connect", (currentPlayerId) => {
+      gameState.currentPlayerId = currentPlayerId;
 
-      let currentPlayer = getCurrentPlayer(gameState);
       let { canvas, ctx } = getCtx(canvasRef.current);
-      let nameLetters = getFirstNameLetters(currentPlayer);
-
-      // console.log(ctx);
-
       const scaleFactor = window.devicePixelRatio;
+
+      console.log(scaleFactor);
       canvas.width = canvas.width * scaleFactor;
       canvas.height = canvas.height * scaleFactor;
       canvas.style.width = canvas.width / scaleFactor + "px";
       canvas.style.height = canvas.height / scaleFactor + "px";
 
-      draw(ctx, canvas, currentPlayer)();
+      draw(ctx, canvas)();
       ctx.imageSmoothingQuality = "high";
 
       document.addEventListener("keydown", handleKeyDown);
@@ -53,40 +49,36 @@ export default function Board() {
     });
 
     socket.on("state_change", (state) => {
-      gameState = state;
-      // console.log(state);
+      gameState = { ...state, currentPlayerId: gameState.currentPlayerId };
     });
   }, []); // empty arr means i subscribed to "state_change" only one time, so that it always listens to it. no need to resubscribe.
 
   return <canvas ref={canvasRef} width="600" height="600" id="board" />;
 }
 
-function drawCircle(ctx, x, y, color, nameLetters) {
+function drawCircle(ctx, player) {
   //creating a circle and defining it's color
   ctx.beginPath();
-  ctx.arc(x, y, 32, 0, 2 * Math.PI);
-  ctx.fillStyle = color;
+  ctx.arc(player.x, player.y, 32, 0, 2 * Math.PI);
+  ctx.fillStyle = player.color;
   ctx.fill();
   ctx.stroke();
   //creating text and defining it's color, size and location
   ctx.font = "20px Arial sans-serif";
   ctx.fillStyle = "black";
-  ctx.fillText(nameLetters, x - 10, y + 5);
+  ctx.fillText(player.name, player.x - 28, player.y + 5);
   return ctx;
 }
 
-const draw = (ctx, canvas, currentPlayer) => () => {
+const draw = (ctx, canvas) => () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  let nameLetters = getFirstNameLetters;
-  console.log({ gameState });
-  drawCircle(
-    ctx,
-    currentPlayer.x,
-    currentPlayer.y,
-    currentPlayer.color,
-    nameLetters
-  );
-  requestAnimationFrame(draw(ctx, canvas, currentPlayer));
+  // console.log({ currentPlayer });
+
+  gameState.players?.forEach((player) => {
+    drawCircle(ctx, player);
+  });
+
+  requestAnimationFrame(draw(ctx, canvas));
 };
 
 function handleKeyDown(e) {

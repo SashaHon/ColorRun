@@ -23,24 +23,13 @@ function assignNextPlayerId(playersArr, socket) {
   let newPlayer = playersArr.find((player) => {
     return !player.id;
   });
-  // console.log(
-  //   "1 here newPlayer from assignNextPlayerId:",
-  //   newPlayer,
-  //   "1 this is players mock:",
-  //   playersArr
-  // );
   newPlayer.id = socket.id;
   return newPlayer;
 }
 
 function createPlayer(playersMockArr, socket) {
   let player = assignNextPlayerId(playersMockArr, socket);
-  // console.log("player:", player);
   state.players.push(player);
-  // console.log(
-  //   "state (here should be new ID in the player in playersDataMock:",
-  //   state
-  // );
   return player.id;
 }
 
@@ -49,14 +38,6 @@ function getPlayerIndex(array, socketId) {
     return player.id === socketId;
   });
 }
-
-// function getPlayerFromState(id) {
-//   return state.players.find((el, i) => {
-//     if (el.id === id) {
-//       return el;
-//     }
-//   });
-// }
 
 function removePlayerFromState(socketId) {
   let disconnectedPlayerId = getPlayerIndex(state.players, socketId);
@@ -80,16 +61,14 @@ function setPlayerIdToZeroInData(socketId) {
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-
   const currentPlayerId = createPlayer(playersDataMock, socket);
   // console.log("state players after connection:", state.players);
-  socket.emit("user_connect", { ...state, currentPlayerId });
+  socket.emit("user_connect", { currentPlayerId });
 
   socket.on("is_moving", ({ movingDirection }) => {
-    let currPlayer = getPlayerFromState(state.players, socket.id);
-    calculateMovingLeft(currPlayer, movingDirection, socket);
+    let currentPlayer = getPlayerFromState(state.players, socket.id);
+    calculateMovingLeft(currentPlayer, movingDirection, socket);
     // calc_movement({ id, movingDirection })
-    // console.log(top, left);
   });
 
   socket.on("end_moving", ({ message }) => {
@@ -99,23 +78,20 @@ io.on("connection", (socket) => {
 
   let intervalId = setInterval(() => {
     socket.emit("state_change", { ...state });
-  }, 100);
+  }, 40);
 
-  socket.on("send_message", (data) => {
-    // console.log("something!!!!");
-    // console.log(data);
-    socket.broadcast.emit("receive_message", data);
+  // socket.on("send_message", (data) => {
+  //   // console.log("something!!!!");
+  //   // console.log(data);
+  //   socket.broadcast.emit("receive_message", data);
 
-    // socket.emit("message", { type: "helo" });
-  });
+  //   // socket.emit("message", { type: "helo" });
+  // });
 
   // socket.on("move_left", (obj) => {
   //   console.log(obj);
   // });
 
-  //!!!!!!!!!!!!
-  //io.on disconnection should remove disconnected player from state.players.
-  //!!!!!!!!!!!!
   socket.on("disconnect", () => {
     console.log("disconnected", socket.id);
     // here I have to clear from state.players the Id of the disconnected player;
@@ -131,13 +107,13 @@ server.listen(3001, () => {
   console.log("SERVER IS RUNNING");
 });
 
-function calculateMovingLeft(currPlayer, movingDirection, socket) {
+function calculateMovingLeft(currentPlayer, movingDirection, socket) {
   if (movingDirection === "ArrowLeft") {
-    console.log("moving left", currPlayer.x, currPlayer.y);
-    // console.log("curr player", currPlayer);
-    currPlayer.x += 10;
+    console.log("moving left", currentPlayer.x, currentPlayer.y);
+    // console.log("curr player", currentPlayer);
+    currentPlayer.x += 10;
     console.log(state);
-    console.log(currPlayer);
+    console.log(currentPlayer);
     // socket.emit("state_change", { ...state });
     //calcFunc(x,y);
     // do left calcs and do left constrain;
