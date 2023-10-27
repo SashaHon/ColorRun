@@ -10,12 +10,16 @@ export function Chat() {
     socket.emit("send_message", { message });
   };
 
+  // useEffect(() => {
+
+  // })
+
   useEffect(() => {
     socket.on("receive_message", (data) => {
       // alert(data.message);
       setMessageReceived(data.message);
     });
-  }, [socket]);
+  }, []);
 
   return (
     <div className="Chat">
@@ -25,6 +29,7 @@ export function Chat() {
         placeholder="your message..."
         onChange={(event) => {
           setMessage(event.target.value);
+          console.log(message);
         }}
       />
       <button onClick={sendMessage}>Send message</button>

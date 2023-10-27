@@ -5,7 +5,12 @@
 
 .Chat-display {
     background-color: grey;
-    margin-bottom: 1em;
+    /* margin-bottom: 1em; */
     height: 400px;
     width: 300px;
+}
+
+input {
+    /* margin-bottom: 1em; */
+    height: 2em;
 }

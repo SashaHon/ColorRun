@@ -67,12 +67,11 @@ io.on("connection", (socket) => {
 
   socket.on("is_moving", ({ movingDirection }) => {
     let currentPlayer = getPlayerFromState(state.players, socket.id);
-    calculateMovingLeft(currentPlayer, movingDirection, socket);
+    calculateMovement(currentPlayer, movingDirection, socket);
     // calc_movement({ id, movingDirection })
   });
 
   socket.on("end_moving", ({ message }) => {
-    //stop calculating and rendering;
     console.log(message);
   });
 
@@ -80,17 +79,11 @@ io.on("connection", (socket) => {
     socket.emit("state_change", { ...state });
   }, 40);
 
-  // socket.on("send_message", (data) => {
-  //   // console.log("something!!!!");
-  //   // console.log(data);
-  //   socket.broadcast.emit("receive_message", data);
+  socket.on("send_message", (data) => {
+    socket.broadcast.emit("receive_message", data);
 
-  //   // socket.emit("message", { type: "helo" });
-  // });
-
-  // socket.on("move_left", (obj) => {
-  //   console.log(obj);
-  // });
+    // socket.emit("message", { type: "helo" });
+  });
 
   socket.on("disconnect", () => {
     console.log("disconnected", socket.id);
@@ -107,22 +100,28 @@ server.listen(3001, () => {
   console.log("SERVER IS RUNNING");
 });
 
-function calculateMovingLeft(currentPlayer, movingDirection, socket) {
+function calculateMovement(currentPlayer, movingDirection, socket) {
   if (movingDirection === "ArrowLeft") {
     console.log("moving left", currentPlayer.x, currentPlayer.y);
-    // console.log("curr player", currentPlayer);
-    currentPlayer.x += 10;
-    console.log(state);
-    console.log(currentPlayer);
-    // socket.emit("state_change", { ...state });
-    //calcFunc(x,y);
-    // do left calcs and do left constrain;
+    if (currentPlayer.x <= 32) {
+      return;
+    }
+    currentPlayer.x -= 10;
   } else if (movingDirection === "ArrowRight") {
-    // do right calcs and do right constrain;
+    if (currentPlayer.x >= 1168) {
+      return;
+    }
+    currentPlayer.x += 10;
   } else if (movingDirection === "ArrowUp") {
-    // do up calcs and do up constrain;
+    if (currentPlayer.y <= 32) {
+      return;
+    }
+    currentPlayer.y -= 10;
   } else if (movingDirection === "ArrowDown") {
-    // do down calcs and do down constrain;
+    if (currentPlayer.y >= 1168) {
+      return;
+    }
+    currentPlayer.y += 10;
   } else {
     console.log("no such direction:", movingDirection);
   }
