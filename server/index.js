@@ -63,7 +63,9 @@ io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
   const currentPlayerId = createPlayer(playersDataMock, socket);
   // console.log("state players after connection:", state.players);
+  // console.log("curr player id", currentPlayerId);
   socket.emit("user_connect", { currentPlayerId });
+  socket.emit("render_aside", { ...state });
 
   socket.on("is_moving", ({ movingDirection }) => {
     let currentPlayer = getPlayerFromState(state.players, socket.id);
@@ -77,7 +79,7 @@ io.on("connection", (socket) => {
 
   let intervalId = setInterval(() => {
     socket.emit("state_change", { ...state });
-  }, 40);
+  }, 1);
 
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message", data);
@@ -101,27 +103,29 @@ server.listen(3001, () => {
 });
 
 function calculateMovement(currentPlayer, movingDirection, socket) {
+  const velocity = 10;
+
   if (movingDirection === "ArrowLeft") {
     console.log("moving left", currentPlayer.x, currentPlayer.y);
     if (currentPlayer.x <= 32) {
       return;
     }
-    currentPlayer.x -= 10;
+    currentPlayer.x -= velocity;
   } else if (movingDirection === "ArrowRight") {
     if (currentPlayer.x >= 1168) {
       return;
     }
-    currentPlayer.x += 10;
+    currentPlayer.x += velocity;
   } else if (movingDirection === "ArrowUp") {
     if (currentPlayer.y <= 32) {
       return;
     }
-    currentPlayer.y -= 10;
+    currentPlayer.y -= velocity;
   } else if (movingDirection === "ArrowDown") {
     if (currentPlayer.y >= 1168) {
       return;
     }
-    currentPlayer.y += 10;
+    currentPlayer.y += velocity;
   } else {
     console.log("no such direction:", movingDirection);
   }

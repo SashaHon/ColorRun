@@ -1,3 +1,11 @@
+/* can add dark mode if have time */
+
+@font-face {
+  font-family: 'KgSecondChancesSketch';
+  src: url('./assets/fonts/KgSecondChancesSketch-KpAp.ttf');
+
+}
+
 .App {
   text-align: center;
   padding: 4em;
@@ -10,12 +18,27 @@
 h1 {
   margin: 0 auto 1em;
   width: 100%;
+  font-family: 'KgSecondChancesSketch';
+  font-weight: 100;
+}
 
+h2 {
+  font-family: 'KgSecondChancesSketch';
+  font-weight: 100;
 }
 
 aside {
   width: 20vw;
 }
+
+
+/* main colors: 
+{
+  color: #EDB7ED;
+  color: #82A0D8; 
+  color: #8DDFCB;
+  color: #ECEE81;
+} */
 
 /* .App-logo {
   height: 40vmin;

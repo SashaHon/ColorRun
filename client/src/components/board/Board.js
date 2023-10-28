@@ -4,12 +4,8 @@ import "./Board.css";
 import socket from "utils/socket";
 import { useEffect, useRef } from "react";
 import "../../helpers/board-helpers";
-import {
-  getCtx,
-  getCurrentPlayer,
-  checkArrowDirection,
-} from "../../helpers/board-helpers";
-
+import { getCtx, checkArrowDirection } from "../../helpers/board-helpers";
+// import { gameState } from "gameState";
 let gameState = {};
 
 export default function Board() {
@@ -34,8 +30,6 @@ export default function Board() {
 
       let { canvas, ctx } = getCtx(canvasRef.current);
       const scaleFactor = window.devicePixelRatio;
-
-      console.log(scaleFactor);
       canvas.width = canvas.width * scaleFactor;
       canvas.height = canvas.height * scaleFactor;
       canvas.style.width = canvas.width / scaleFactor + "px";
@@ -72,7 +66,6 @@ function drawCircle(ctx, player) {
 
 const draw = (ctx, canvas) => () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // console.log({ currentPlayer });
 
   gameState.players?.forEach((player) => {
     drawCircle(ctx, player);

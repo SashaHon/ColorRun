@@ -12,5 +12,11 @@
 
 input {
     /* margin-bottom: 1em; */
-    height: 2em;
+    height: 3em;
+}
+
+button {
+    height: 3em;
+    background-color:#82A0D8;
+    color: white;
 }
