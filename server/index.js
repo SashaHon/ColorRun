@@ -107,22 +107,22 @@ function calculateMovement(currentPlayer, movingDirection, socket) {
 
   if (movingDirection === "ArrowLeft") {
     console.log("moving left", currentPlayer.x, currentPlayer.y);
-    if (currentPlayer.x <= 32) {
+    if (currentPlayer.x <= 33) {
       return;
     }
     currentPlayer.x -= velocity;
   } else if (movingDirection === "ArrowRight") {
-    if (currentPlayer.x >= 1168) {
+    if (currentPlayer.x >= 1167) {
       return;
     }
     currentPlayer.x += velocity;
   } else if (movingDirection === "ArrowUp") {
-    if (currentPlayer.y <= 32) {
+    if (currentPlayer.y <= 33) {
       return;
     }
     currentPlayer.y -= velocity;
   } else if (movingDirection === "ArrowDown") {
-    if (currentPlayer.y >= 1168) {
+    if (currentPlayer.y >= 1167) {
       return;
     }
     currentPlayer.y += velocity;

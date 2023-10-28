@@ -31,8 +31,8 @@ export function Aside() {
       <p>Your first time in Color Run?</p>
       <p>
         No worries, the rules are easy-peasy :) Use arrows{" "}
-        <span className="grey">← ↑ ↓ → </span>to move your character on the
-        board.
+        <span className={"color-" + player.name + " bold"}>← ↑ ↓ → </span>to
+        move your character on the board.
       </p>
       <p>
         You see other characters? Try to escape them! They might infect you with
