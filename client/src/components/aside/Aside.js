@@ -1,25 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Aside.css";
-import socket from "utils/socket";
-import { getCurrentPlayer } from "helpers/board-helpers";
 
-let gameState = {};
-
-export function Aside() {
-  let [player, setPlayer] = useState({});
-
-  socket.on("user_connect", ({ currentPlayerId }) => {
-    gameState.currentPlayerId = currentPlayerId;
-  });
-
-  useEffect(() => {
-    socket.on("render_aside", (state) => {
-      gameState = { ...state, currentPlayerId: gameState.currentPlayerId };
-      player = getCurrentPlayer(gameState);
-      setPlayer(player);
-    });
-  }, []);
-
+export function Aside({ player }) {
   return (
     <aside>
       <h2>

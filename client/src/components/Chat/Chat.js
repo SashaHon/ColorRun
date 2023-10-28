@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./Chat.css";
 import socket from "utils/socket";
 
-export function Chat() {
+export function Chat({ player }) {
   const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
+  const [messageReceived, setMessageReceived] = useState(""); ///pass array of messages;
 
   const sendMessage = () => {
     socket.emit("send_message", { message });
   };
-
-  // useEffect(() => {
-
-  // })
 
   useEffect(() => {
     socket.on("receive_message", (data) => {

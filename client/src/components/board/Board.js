@@ -1,14 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./Board.css";
-// import gameState from "gameState";
 import socket from "utils/socket";
-import { useEffect, useRef } from "react";
-import "../../helpers/board-helpers";
-import { getCtx, checkArrowDirection } from "../../helpers/board-helpers";
-// import { gameState } from "gameState";
+import { getCtx, checkArrowDirection } from "helpers/board-helpers";
 let gameState = {};
 
-export default function Board() {
+export default function Board({ playerId }) {
   /////write Board as a function!! then it uses useEffect and renders player on the data it receive
   const canvasRef = useRef(); //it's a refference for React
 
@@ -23,24 +19,20 @@ export default function Board() {
   // }, []);
 
   useEffect(() => {
-    gameState.isMoving = false;
+    gameState.currentPlayerId = playerId;
 
-    socket.on("user_connect", (currentPlayerId) => {
-      gameState.currentPlayerId = currentPlayerId;
+    let { canvas, ctx } = getCtx(canvasRef.current);
+    const scaleFactor = window.devicePixelRatio;
+    canvas.width = canvas.width * scaleFactor;
+    canvas.height = canvas.height * scaleFactor;
+    canvas.style.width = canvas.width / scaleFactor + "px";
+    canvas.style.height = canvas.height / scaleFactor + "px";
 
-      let { canvas, ctx } = getCtx(canvasRef.current);
-      const scaleFactor = window.devicePixelRatio;
-      canvas.width = canvas.width * scaleFactor;
-      canvas.height = canvas.height * scaleFactor;
-      canvas.style.width = canvas.width / scaleFactor + "px";
-      canvas.style.height = canvas.height / scaleFactor + "px";
+    draw(ctx, canvas)();
+    ctx.imageSmoothingQuality = "high";
 
-      draw(ctx, canvas)();
-      ctx.imageSmoothingQuality = "high";
-
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("keyup", handleKeyUp);
-    });
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
 
     socket.on("state_change", (state) => {
       gameState = { ...state, currentPlayerId: gameState.currentPlayerId };
@@ -94,7 +86,5 @@ function handleKeyUp(e) {
   ) {
     return;
   }
-  // console.log("KeyUP!!");
-  // gameState.isMoving = !gameState.isMoving;
   socket.emit("end_moving", { message: "stop moving!" });
 }

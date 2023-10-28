@@ -61,10 +61,19 @@ function setPlayerIdToZeroInData(socketId) {
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+
   const currentPlayerId = createPlayer(playersDataMock, socket);
+  const currentPlayer = getPlayerFromState(state.players, socket.id);
   // console.log("state players after connection:", state.players);
   // console.log("curr player id", currentPlayerId);
-  socket.emit("user_connect", { currentPlayerId });
+
+  // console.log(currentPlayer);
+  socket.emit("user_connect", {
+    id: currentPlayer.id,
+    name: currentPlayer.name,
+    color: currentPlayer.color,
+  });
+
   socket.emit("render_aside", { ...state });
 
   socket.on("is_moving", ({ movingDirection }) => {

@@ -5,6 +5,7 @@ module.exports = {
     console.log("i work");
     console.log({ data });
   },
+
   getPlayerFromState: function (stateArr, id) {
     return stateArr.find((el, i) => {
       if (el.id === id) {
