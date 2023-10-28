@@ -1,31 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./Chat.css";
 import socket from "utils/socket";
 
 export function Chat({ player }) {
   const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState(""); ///pass array of messages;
+  const [messages, setMessages] = useState([]); ///pass array of messages;
 
   const sendMessage = () => {
-    socket.emit("send_message", { message });
+    const messageData = { message, player };
+    socket.emit("send_message", messageData);
+    handleReceiveMessage(messageData);
+    setMessage("");
   };
 
+  const handleReceiveMessage = useCallback(
+    (data) => {
+      setMessages([...messages, data]);
+    },
+    [messages]
+  );
+
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      // alert(data.message);
-      setMessageReceived(data.message);
-    });
-  }, []);
+    socket.on("receive_message", handleReceiveMessage);
+
+    return () => {
+      socket.off("receive_message", handleReceiveMessage);
+    }; //clean up function does unsubscription when and before next call of useEffect is made;
+  }, [handleReceiveMessage]);
 
   return (
     <div className="Chat">
       <h2>Chat</h2>
-      <div className="Chat-display">{messageReceived}</div>
+      <div className="Chat-display">
+        {messages.map((obj, index) => {
+          return <div key={obj.player.id + index}>{obj.message}</div>;
+        })}
+      </div>
       <input
-        placeholder="your message..."
+        placeholder="  your message..."
+        value={message}
         onChange={(event) => {
           setMessage(event.target.value);
-          console.log(message);
         }}
       />
       <button onClick={sendMessage}>Send message</button>

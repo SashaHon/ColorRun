@@ -4,19 +4,22 @@
 }
 
 .Chat-display {
-    background-color: grey;
-    /* margin-bottom: 1em; */
+    border: 2px dashed grey;
+    border-radius: 17px;
+    margin-bottom: 1em;
     height: 400px;
     width: 300px;
+
 }
 
 input {
     /* margin-bottom: 1em; */
+    
     height: 3em;
 }
 
 button {
     height: 3em;
-    background-color:#82A0D8;
+    
     color: white;
 }
