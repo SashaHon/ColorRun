@@ -3,18 +3,67 @@
     flex-direction: column;
 }
 
+h2 {
+    margin-top: 0;
+}
 .Chat-display {
     border: 2px dashed grey;
     border-radius: 17px;
     margin-bottom: 1em;
     height: 400px;
     width: 300px;
+    padding: 1em;
+    overflow: auto;
+}
 
+.message-wrapper {
+    display: flex;
+    border-radius: 8px;
+    margin-bottom: 0.2em;
+}
+
+/* .chat-circle {
+    border-radius: 100%;
+    margin-right: 1em;
+    margin-bottom: 0.2em;
+    font-size: 0.5em;
+    height: 3em;
+    
+    padding: 0.4em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.chat-circle {
+    /* border-radius: 100%; */
+    /* margin-right: 1em;
+    margin-bottom: 0.2em; */
+    /* font-size: 0.5em; */
+    /* height: 3em; */
+    font-family: 'KgSecondChancesSketch';
+    padding: 0.4em;
+   
+    display: flex;
+    /* justify-content: center;
+    align-items: flex-start; */
+    /* border-radius: 5px; */
+}
+
+.text-message {
+    /* height: 2em; */
+    padding: 0 0.5em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.2em;
+    word-break: break-all;
+    /* border-radius: 5px; */
 }
 
 input {
     /* margin-bottom: 1em; */
-    
+    padding-left: 1em;
     height: 3em;
 }
 

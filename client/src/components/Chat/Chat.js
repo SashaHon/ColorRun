@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import "./Chat.css";
 import socket from "utils/socket";
 
 export function Chat({ player }) {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]); ///pass array of messages;
+  const [messages, setMessages] = useState([]);
 
   const sendMessage = () => {
     const messageData = { message, player };
@@ -31,13 +31,24 @@ export function Chat({ player }) {
   return (
     <div className="Chat">
       <h2>Chat</h2>
+
       <div className="Chat-display">
         {messages.map((obj, index) => {
-          return <div key={obj.player.id + index}>{obj.message}</div>;
+          return (
+            <div
+              className="message-wrapper"
+              key={obj.player.id + index}
+              style={{ border: "2px solid" + obj.player.color }}
+            >
+              <div className="chat-circle">{obj.player.name}:</div>
+              <div className="text-message">{obj.message}</div>
+            </div>
+          );
         })}
       </div>
+
       <input
-        placeholder="  your message..."
+        placeholder="your message..."
         value={message}
         onChange={(event) => {
           setMessage(event.target.value);

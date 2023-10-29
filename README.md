@@ -6,6 +6,9 @@
 - (server send to front this info and front renders)
 - clients sends info to server (direction of movement), then server calc coordinates of users and broadcast them back; -->
 
-- do chat
+<!-- - do chat -->
+
 - add favicon
-- add avatars
+<!-- - add avatars -->
+- add scroll in chat;
+- improve circles styling text;
