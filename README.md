@@ -12,3 +12,5 @@
 <!-- - add avatars -->
 - add scroll in chat;
 - improve circles styling text;
+<!-- - add event on Enter
+- add if input.value === "" then return; -->

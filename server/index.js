@@ -90,11 +90,11 @@ io.on("connection", (socket) => {
     socket.emit("state_change", { ...state });
   }, 1);
 
-  socket.on("send_message", (data) => {
-    socket.broadcast.emit("receive_message", data);
-    console.log("data", data);
-    // socket.emit("message", { type: "helo" });
-  });
+  // socket.on("send_message", (data) => {
+  //   // socket.broadcast.emit("receive_message", data);
+  //   // console.log("data", data);
+  //   // socket.emit("message", { type: "helo" });
+  // });
 
   socket.on("disconnect", () => {
     console.log("disconnected", socket.id);

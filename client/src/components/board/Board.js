@@ -37,6 +37,12 @@ export default function Board({ playerId }) {
     socket.on("state_change", (state) => {
       gameState = { ...state, currentPlayerId: gameState.currentPlayerId };
     });
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleKeyUp);
+      // socket.off("state_change")
+    };
   }, []); // empty arr means i subscribed to "state_change" only one time, so that it always listens to it. no need to resubscribe.
 
   return <canvas ref={canvasRef} width="600" height="600" id="board" />;
