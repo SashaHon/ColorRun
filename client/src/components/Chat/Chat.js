@@ -5,33 +5,61 @@ import socket from "utils/socket";
 export function Chat({ player }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  // console.log(message);
+  const [lastMessage, setLastMessage] = useState(null);
 
-  const sendMessage = () => {
+  const sendMessage = useCallback(() => {
     if (message === "") return;
     const messageData = { message, player };
+    messageData.isFirstMessage = true;
 
-    // socket.emit("send_message", messageData);
+    socket.emit("send_message", messageData);
 
     handleReceiveMessage(messageData);
     setMessage("");
-  };
+  });
+
+  // function toRenderName() {
+  //   const lastMessage = messages[messages.length - 1];
+  //   const previousMessage = messages[messages.length - 2];
+
+  //   if (lastMessage.player.id === previousMessage?.player.id) {
+  //     return false;
+  //   }
+  //   // return true;
+  //   // console.log(lastMessage.player == previousMessage?.player);
+  //   return lastMessage.player.name;
+  // }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  function isFirstMessage(lastMessageData) {
+    const previousMessage = messages[messages.length - 1];
+    if (lastMessageData.player.id === previousMessage?.player?.id) {
+      console.log("same player");
+      lastMessageData.isFirstMessage = false;
+    }
+  }
 
   const handleReceiveMessage = useCallback(
     (data) => {
+      isFirstMessage(data);
       setMessages([...messages, data]);
+
+      // setLastMessage(data);
     },
-    [messages]
+    [isFirstMessage, messages]
   );
 
-  const handleKeyDownEnter = useCallback((e) => {
-    //sprosit' pochemu jeltym podcherkivaet.
-    if (e.key !== "Enter") {
-      return;
-    }
-    sendMessage();
-    console.log("cu", message); ///sprosit' pochemy tak mnogo console.log kogda input dlennee chem 1 esli ne obernuto v useCallback
-  });
+  const handleKeyDownEnter = useCallback(
+    (e) => {
+      //sprosit' pochemu jeltym podcherkivaet.
+      if (e.key !== "Enter") {
+        return;
+      }
+      sendMessage();
+      // console.log("cu", message); ///sprosit' pochemy tak mnogo console.log kogda input dlennee chem 1 esli ne obernuto v useCallback
+    },
+    [sendMessage]
+  );
 
   document.addEventListener("keydown", handleKeyDownEnter);
 
@@ -51,13 +79,17 @@ export function Chat({ player }) {
       <div className="Chat-display">
         {messages.map((obj, index) => {
           return (
-            <div
-              className="message-wrapper"
-              key={obj.player.id + index}
-              style={{ border: "2px solid" + obj.player.color }}
-            >
-              <div className="chat-circle">{obj.player.name}:</div>
-              <div className="text-message">{obj.message}</div>
+            <div className="message-wrapper" key={obj.player.id + index}>
+              {obj.isFirstMessage && (
+                <div className="user-name">{obj.player.name}:</div>
+              )}
+
+              <div
+                className="text-message"
+                style={{ border: "2px solid" + obj.player.color }}
+              >
+                {obj.message}
+              </div>
             </div>
           );
         })}
@@ -68,7 +100,6 @@ export function Chat({ player }) {
         value={message}
         onChange={(event) => {
           setMessage(event.target.value);
-          // console.log(message);
         }}
       />
       <button onClick={sendMessage}>Send message</button>
