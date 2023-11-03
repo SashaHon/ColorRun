@@ -10,8 +10,8 @@ export function Chat({ player }) {
   useEffect(() => {
     const divElement = messageWrapperRef.current;
     divElement?.scrollIntoView();
-    // console.log(divElement);
-  });
+    console.log(divElement);
+  }, [messages]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function isFistMessageBySamePlayer(lastMessageData) {

@@ -8,10 +8,11 @@
 <!-- - do chat -->
 <!-- - add event on Enter
 - add if input.value === "" then return; -->
+<!-- - add scroll in chat; -->
+<!-- - add avatars -->
 
 - add favicon
-<!-- - add avatars -->
-- add scroll in chat;
+
 - improve circles styling text;
 - move functions out of main code area;
 - add diagonal movement;

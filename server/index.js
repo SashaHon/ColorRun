@@ -11,9 +11,12 @@ const { calc_movement, getPlayerFromState } = require("./server-helpers");
 app.use(cors());
 
 const server = http.createServer(app);
+const serverUrl = process.env.environmentUrl;
+
+console.log("server url", serverUrl);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: serverUrl ? serverUrl : "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
