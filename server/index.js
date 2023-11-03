@@ -11,12 +11,12 @@ const { calc_movement, getPlayerFromState } = require("./server-helpers");
 app.use(cors());
 
 const server = http.createServer(app);
-const serverUrl = process.env.environmentUrl;
+const clientUrl = process.env.clientUrl;
 
-console.log("server url", serverUrl);
+console.log("client urllllllll", clientUrl);
 const io = new Server(server, {
   cors: {
-    origin: serverUrl ? serverUrl : "http://localhost:3000",
+    origin:  clientUrl,
     methods: ["GET", "POST"],
   },
 });
@@ -108,7 +108,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => {
+server.listen(3001, () => { //i will use this 3001 port to receive msgs
   console.log("SERVER IS RUNNING");
 });
 

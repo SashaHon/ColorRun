@@ -16,3 +16,7 @@
 - improve circles styling text;
 - move functions out of main code area;
 - add diagonal movement;
+
+How to kill the server process when its blocking a port
+lsof -i tcp:3001
+kill -9 PID(e.g. 29743)
