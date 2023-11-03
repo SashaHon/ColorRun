@@ -16,10 +16,10 @@ h2 {
     overflow: auto;
 }
 
-.message-wrapper {
-    /* border-radius: 8px; */
+/* .message-wrapper {
+    border-radius: 8px;
     margin-bottom: 0.2em;
-}
+} */
 
 .user-name {
     font-family: 'KgSecondChancesSketch';
@@ -35,16 +35,17 @@ h2 {
     word-break: break-all;
     border-radius: 10px;
     width: fit-content;
+    font-size: 0.9rem;
 }
 
 input {
-    /* margin-bottom: 1em; */
-    padding-left: 1em;
+    padding-left: 1rem;
     height: 3em;
 }
 
 button {
     height: 3em;
-    
-    color: white;
+    font-family: 'KgSecondChancesSketch';
+    font-weight: 800;
+    color: grey;
 }

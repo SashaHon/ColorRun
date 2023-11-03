@@ -5,53 +5,43 @@ import socket from "utils/socket";
 export function Chat({ player }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [lastMessage, setLastMessage] = useState(null);
+  let messageWrapperRef = useRef();
 
-  const sendMessage = useCallback(() => {
-    if (message === "") return;
-    const messageData = { message, player };
-    messageData.isFirstMessage = true;
-
-    socket.emit("send_message", messageData);
-
-    handleReceiveMessage(messageData);
-    setMessage("");
+  useEffect(() => {
+    const divElement = messageWrapperRef.current;
+    divElement?.scrollIntoView();
+    // console.log(divElement);
   });
 
-  // function toRenderName() {
-  //   const lastMessage = messages[messages.length - 1];
-  //   const previousMessage = messages[messages.length - 2];
-
-  //   if (lastMessage.player.id === previousMessage?.player.id) {
-  //     return false;
-  //   }
-  //   // return true;
-  //   // console.log(lastMessage.player == previousMessage?.player);
-  //   return lastMessage.player.name;
-  // }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function isFirstMessage(lastMessageData) {
+  function isFistMessageBySamePlayer(lastMessageData) {
     const previousMessage = messages[messages.length - 1];
     if (lastMessageData.player.id === previousMessage?.player?.id) {
-      console.log("same player");
-      lastMessageData.isFirstMessage = false;
+      lastMessageData.isFistMessageBySamePlayer = false;
     }
   }
 
   const handleReceiveMessage = useCallback(
     (data) => {
-      isFirstMessage(data);
+      isFistMessageBySamePlayer(data);
       setMessages([...messages, data]);
-
-      // setLastMessage(data);
     },
-    [isFirstMessage, messages]
+    [isFistMessageBySamePlayer, messages]
   );
+
+  const sendMessage = useCallback(() => {
+    if (message === "") return;
+    const messageData = { message, player };
+    messageData.isFistMessageBySamePlayer = true;
+    socket.emit("send_message", messageData);
+    handleReceiveMessage(messageData);
+    setMessage("");
+
+    //somewhere here make element scroll into view;
+  }, [handleReceiveMessage, message, player]);
 
   const handleKeyDownEnter = useCallback(
     (e) => {
-      //sprosit' pochemu jeltym podcherkivaet.
       if (e.key !== "Enter") {
         return;
       }
@@ -77,16 +67,21 @@ export function Chat({ player }) {
       <h2>Chat</h2>
 
       <div className="Chat-display">
-        {messages.map((obj, index) => {
+        {messages.map((obj, index, array) => {
           return (
-            <div className="message-wrapper" key={obj.player.id + index}>
-              {obj.isFirstMessage && (
-                <div className="user-name">{obj.player.name}:</div>
+            <div
+              ref={index === array.length - 1 ? messageWrapperRef : undefined}
+              key={obj.player.id + index}
+            >
+              {obj.isFistMessageBySamePlayer && (
+                <div className="user-name">{obj.player.name}</div>
               )}
 
               <div
                 className="text-message"
-                style={{ border: "2px solid" + obj.player.color }}
+                style={{
+                  backgroundColor: obj.player.color + 80,
+                }}
               >
                 {obj.message}
               </div>

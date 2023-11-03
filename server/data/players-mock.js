@@ -12,7 +12,7 @@ module.exports = {
       name: "Cherry",
       x: 1168,
       y: 1168,
-      color: "#FF6969 ",
+      color: "#FF6969",
     },
     {
       id: null,
