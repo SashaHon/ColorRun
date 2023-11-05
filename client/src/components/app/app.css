@@ -1,4 +1,32 @@
-.app {
-    margin: auto;
-    width: 60%;
+/* can add dark mode if have time */
+
+@font-face {
+  font-family: 'KgSecondChancesSketch';
+  src: url('../../assets/fonts/KgSecondChancesSketch-KpAp.ttf');
+
+}
+
+.App {
+  text-align: center;
+  padding: 3em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+h1 {
+  margin: 0 auto 1em;
+  width: 100%;
+  font-family: 'KgSecondChancesSketch';
+  font-weight: 100;
+}
+
+h2 {
+  font-family: 'KgSecondChancesSketch';
+  font-weight: 100;
+  margin-top: 0;
+}
+
+aside {
+  width: 20vw;
 }

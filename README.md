@@ -10,8 +10,8 @@
 - add if input.value === "" then return; -->
 <!-- - add scroll in chat; -->
 <!-- - add avatars -->
-
 <!-- - improve circles styling text; -->
+<!-- -improve project structure -->
 
 - add favicon
 - move functions out of main code area;

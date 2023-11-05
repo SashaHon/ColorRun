@@ -6,15 +6,27 @@ export function Aside({ player }) {
     <aside>
       <h2>
         Welcome,{" "}
-        <span className={"color-" + player.name + " bold"}>
+        <span
+          className="bold"
+          style={{
+            color: player.color,
+          }}
+        >
           {player.name} !
         </span>
       </h2>
       <p>Your first time in Color Run?</p>
       <p>
         No worries, the rules are easy-peasy :) Use arrows{" "}
-        <span className={"color-" + player.name + " bold"}>← ↑ ↓ → </span>to
-        move your character on the board.
+        <span
+          className="bold"
+          style={{
+            color: player.color,
+          }}
+        >
+          ← ↑ ↓ →{" "}
+        </span>
+        to move your character on the board.
       </p>
       <p>
         You see other characters? Try to escape them! They might infect you with
