@@ -12,9 +12,9 @@
 <!-- - add avatars -->
 <!-- - improve circles styling text; -->
 <!-- -improve project structure -->
+<!-- - move functions out of main code area; -->
 
 - add favicon
-- move functions out of main code area;
 - add diagonal movement;
 
 How to kill the server process when its blocking a port

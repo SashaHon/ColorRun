@@ -26,11 +26,18 @@ export function Aside({ player }) {
         >
           ← ↑ ↓ →{" "}
         </span>
-        to move your character on the board.
+        to move your character on the board. If you feel bored try out to chat
+        with your mates. Hope you enjoy it!
       </p>
-      <p>
-        You see other characters? Try to escape them! They might infect you with
-        colorless virus to make you loose your shine x_x
+      <br></br>
+      <p className="grey">
+        <em>These are upcoming features:</em>
+      </p>
+      <p className="grey">
+        <em>
+          See other characters? Try to escape them! They might infect you with
+          colorless virus to make you loose your shine x_x
+        </em>
       </p>
     </aside>
   );
