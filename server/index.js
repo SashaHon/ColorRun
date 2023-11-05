@@ -3,16 +3,14 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const { playersDataMock } = require("./data/players-mock");
-const state = require("./state/state");
-const { stat } = require("fs");
 const {
-  getPlayerFromState,
+  state,
   createPlayer,
+  getPlayerFromState,
   removePlayerFromState,
   setPlayerIdToZeroInDataMock,
   calculateMovement,
-} = require("./server-helpers");
+} = require("./state");
 
 app.use(cors());
 
@@ -21,7 +19,7 @@ const clientUrl = process.env.clientUrl;
 
 const io = new Server(server, {
   cors: {
-    origin: clientUrl || "http://localhost:3000/",
+    origin: clientUrl || "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
@@ -29,8 +27,8 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   // console.log(`User Connected: ${socket.id}`);
 
-  const currentPlayerId = createPlayer(playersDataMock, socket);
-  const currentPlayer = getPlayerFromState(state.players, socket.id);
+  const currentPlayerId = createPlayer(socket);
+  const currentPlayer = getPlayerFromState(socket.id);
 
   socket.emit("user_connect", {
     id: currentPlayer.id,
@@ -40,7 +38,7 @@ io.on("connection", (socket) => {
   socket.emit("render_aside", { ...state });
 
   socket.on("is_moving", ({ movingDirection }) => {
-    let currentPlayer = getPlayerFromState(state.players, socket.id);
+    let currentPlayer = getPlayerFromState(socket.id);
     calculateMovement(currentPlayer, movingDirection, socket);
   });
 
@@ -55,8 +53,9 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     // console.log("disconnected", socket.id);
     // here I have to clear from state.players the Id of the disconnected player;
-    removePlayerFromState(socket.id);
     setPlayerIdToZeroInDataMock(socket.id);
+    removePlayerFromState(socket.id);
+
     // when state has changed and a new player is in I want Board.js to know it and to re-render;
     socket.emit("state_change", { ...state, currentPlayerId });
   });
