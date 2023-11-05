@@ -39,8 +39,8 @@ function removePlayerFromState(socketId) {
 }
 
 function setPlayerIdToZeroInDataMock(socketId) {
-  let disconnectedPlayerId = getPlayerIndex(socketId);
-  playersDataMock[disconnectedPlayerId].id = null;
+  const player = playersDataMock.find((player) => player.id === socketId);
+  player.id = null;
 }
 
 function calculateMovement(currentPlayer, movingDirection) {

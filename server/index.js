@@ -27,7 +27,7 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   // console.log(`User Connected: ${socket.id}`);
 
-  const currentPlayerId = createPlayer(socket);
+  createPlayer(socket);
   const currentPlayer = getPlayerFromState(socket.id);
 
   socket.emit("user_connect", {
@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
     name: currentPlayer.name,
     color: currentPlayer.color,
   });
-  socket.emit("render_aside", { ...state });
+  // socket.emit("render_aside", { ...state });
 
   socket.on("is_moving", ({ movingDirection }) => {
     let currentPlayer = getPlayerFromState(socket.id);
@@ -44,7 +44,7 @@ io.on("connection", (socket) => {
 
   let intervalId = setInterval(() => {
     socket.emit("state_change", { ...state });
-  }, 1);
+  }, 30);
 
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message", data);
@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
     removePlayerFromState(socket.id);
 
     // when state has changed and a new player is in I want Board.js to know it and to re-render;
-    socket.emit("state_change", { ...state, currentPlayerId });
+    // socket.emit("state_change", { ...state, currentPlayerId });
   });
 });
 
