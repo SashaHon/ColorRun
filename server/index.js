@@ -13,10 +13,9 @@ app.use(cors());
 const server = http.createServer(app);
 const clientUrl = process.env.clientUrl;
 
-console.log("client urllllllll", clientUrl);
 const io = new Server(server, {
   cors: {
-    origin:  clientUrl,
+    origin: clientUrl || "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
@@ -108,7 +107,8 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => { //i will use this 3001 port to receive msgs
+server.listen(3001, () => {
+  //i will use this 3001 port to receive msgs
   console.log("SERVER IS RUNNING");
 });
 
