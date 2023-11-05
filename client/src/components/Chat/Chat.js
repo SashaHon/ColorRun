@@ -37,8 +37,6 @@ export function Chat({ player }) {
     socket.emit("send_message", messageData);
     handleReceiveMessage(messageData);
     setMessage("");
-
-    //somewhere here make element scroll into view;
   }, [handleReceiveMessage, message, player]);
 
   const handleKeyDownEnter = useCallback(

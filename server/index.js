@@ -15,7 +15,7 @@ const clientUrl = process.env.clientUrl;
 
 const io = new Server(server, {
   cors: {
-    origin: clientUrl || "http://localhost:3000",
+    origin: clientUrl || "http://localhost:3000/",
     methods: ["GET", "POST"],
   },
 });

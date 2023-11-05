@@ -1,8 +1,10 @@
-function getPlayerIndex(array, socketId) {
-  return array.findIndex((player) => {
-    return player.id === socketId;
-  });
-}
+import socket from "utils/socket";
+
+// function getPlayerIndex(array, socketId) {
+//   return array.findIndex((player) => {
+//     return player.id === socketId;
+//   });
+// }
 
 function getCtx(canvasRefCurrent) {
   const canvas = canvasRefCurrent;
@@ -12,16 +14,39 @@ function getCtx(canvasRefCurrent) {
   };
 }
 
-function getCurrentPlayer(gameState) {
-  let currentPlayerIndex = getPlayerIndex(
-    gameState.players,
-    gameState.currentPlayerId
-  );
-  return gameState.players[currentPlayerIndex];
+// function getCurrentPlayer(gameState) {
+//   let currentPlayerIndex = getPlayerIndex(
+//     gameState.players,
+//     gameState.currentPlayerId
+//   );
+//   return gameState.players[currentPlayerIndex];
+// }
+
+// function getFirstNameLetters(player) {
+//   return player.name.slice(0, 2);
+// }
+
+function handleKeyDown(e) {
+  const keyDirectionString = checkArrowDirection(e.key);
+  if (!keyDirectionString) {
+    return;
+  }
+  socket.emit(`is_moving`, {
+    movingDirection: keyDirectionString,
+  });
 }
 
-function getFirstNameLetters(player) {
-  return player.name.slice(0, 2);
+function handleKeyUp(e) {
+  if (
+    e.key !== "ArrowLeft" &&
+    e.key &&
+    "ArrowRight" &&
+    e.key !== "ArrowUp" &&
+    e.key !== "ArrowDown"
+  ) {
+    return;
+  }
+  socket.emit("end_moving", { message: "stop moving!" });
 }
 
 function checkArrowDirection(key) {
@@ -36,33 +61,4 @@ function checkArrowDirection(key) {
   } else return null;
 }
 
-// function drawCircle(ctx, x, y, color, nameLetters) {
-//   ctx.beginPath();
-//   ctx.arc(x, y, 16, 0, 2 * Math.PI);
-//   ctx.fillStyle = color;
-//   ctx.fill();
-//   // ctx.stroke();
-//   ctx.font = "10px Arial sans-serif";
-//   ctx.fillStyle = "black";
-//   // console.log("width:", nameLetters.width, "height:", nameLetters.height);
-//   ctx.fillText(nameLetters, x - 5, y + 3);
-//   return ctx;
-// }
-
-// function draw(gameState, ctx, canvas, x, y, color, nameLetters) {
-//   // console.log(canvas.width);
-//   return (ctx, canvas, x, y, color, nameLetters) => {
-//     // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-//     drawCircle(ctx, x, y, color, nameLetters);
-//     requestAnimationFrame(draw(ctx, canvas));
-//   };
-// }
-
-export {
-  getPlayerIndex,
-  getCtx,
-  getCurrentPlayer,
-  getFirstNameLetters,
-  checkArrowDirection,
-};
+export { getCtx, handleKeyDown, handleKeyUp };

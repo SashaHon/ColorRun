@@ -1,22 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import "./Board.css";
 import socket from "utils/socket";
-import { getCtx, checkArrowDirection } from "helpers/board-helpers";
+import { getCtx, handleKeyDown, handleKeyUp } from "helpers/board-helpers";
 let gameState = {};
 
 export default function Board({ playerId }) {
-  /////write Board as a function!! then it uses useEffect and renders player on the data it receive
-  const canvasRef = useRef(); //it's a refference for React
-
-  // useEffect(() => {
-  //   //    some code. here in the end there is an array, it is a dependency. and with an empty array it will be called only once;
-  //   // const canvas = canvasRef.current;
-  //   // let ctx = canvas.getContext("2d");
-  //   // draw(ctx, canvas)();
-  //   // return () => {
-  //   //   // onUnmount
-  //   // }
-  // }, []);
+  const canvasRef = useRef();
 
   useEffect(() => {
     gameState.currentPlayerId = playerId;
@@ -41,7 +30,7 @@ export default function Board({ playerId }) {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keydown", handleKeyUp);
-      // socket.off("state_change")
+      socket.off("state_change");
     };
   }, []); // empty arr means i subscribed to "state_change" only one time, so that it always listens to it. no need to resubscribe.
 
@@ -77,26 +66,3 @@ const draw = (ctx, canvas) => () => {
 
   requestAnimationFrame(draw(ctx, canvas));
 };
-
-function handleKeyDown(e) {
-  const keyDirectionString = checkArrowDirection(e.key);
-  if (!keyDirectionString) {
-    return;
-  }
-  socket.emit(`is_moving`, {
-    movingDirection: keyDirectionString,
-  });
-}
-
-function handleKeyUp(e) {
-  if (
-    e.key !== "ArrowLeft" &&
-    e.key &&
-    "ArrowRight" &&
-    e.key !== "ArrowUp" &&
-    e.key !== "ArrowDown"
-  ) {
-    return;
-  }
-  socket.emit("end_moving", { message: "stop moving!" });
-}
