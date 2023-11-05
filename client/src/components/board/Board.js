@@ -55,10 +55,16 @@ function drawCircle(ctx, player) {
   ctx.fillStyle = player.color;
   ctx.fill();
   ctx.stroke();
+  ctx.strokeStyle = "grey";
+
   //creating text and defining it's color, size and location
-  ctx.font = "20px Arial sans-serif";
+  ctx.font = "14px KgSecondChancesSketch ";
   ctx.fillStyle = "black";
-  ctx.fillText(player.name, player.x - 28, player.y + 5);
+  ctx.fillText(
+    player.name,
+    player.x - ctx.measureText(player.name).width / 2,
+    player.y + 5
+  );
   return ctx;
 }
 

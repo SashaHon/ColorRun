@@ -11,9 +11,9 @@
 <!-- - add scroll in chat; -->
 <!-- - add avatars -->
 
-- add favicon
+<!-- - improve circles styling text; -->
 
-- improve circles styling text;
+- add favicon
 - move functions out of main code area;
 - add diagonal movement;
 

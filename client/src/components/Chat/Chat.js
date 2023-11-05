@@ -5,21 +5,22 @@ import socket from "utils/socket";
 export function Chat({ player }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  let messageWrapperRef = useRef();
+  const messageWrapperRef = useRef();
 
   useEffect(() => {
     const divElement = messageWrapperRef.current;
     divElement?.scrollIntoView();
-    console.log(divElement);
   }, [messages]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  function isFistMessageBySamePlayer(lastMessageData) {
-    const previousMessage = messages[messages.length - 1];
-    if (lastMessageData.player.id === previousMessage?.player?.id) {
-      lastMessageData.isFistMessageBySamePlayer = false;
-    }
-  }
+  const isFistMessageBySamePlayer = useCallback(
+    (lastMessageData) => {
+      const previousMessage = messages[messages.length - 1];
+      if (lastMessageData.player.id === previousMessage?.player?.id) {
+        lastMessageData.isFistMessageBySamePlayer = false;
+      }
+    },
+    [messages]
+  );
 
   const handleReceiveMessage = useCallback(
     (data) => {
@@ -30,7 +31,7 @@ export function Chat({ player }) {
   );
 
   const sendMessage = useCallback(() => {
-    if (message === "") return;
+    if (message.trim() === "") return;
     const messageData = { message, player };
     messageData.isFistMessageBySamePlayer = true;
     socket.emit("send_message", messageData);
@@ -46,7 +47,6 @@ export function Chat({ player }) {
         return;
       }
       sendMessage();
-      // console.log("cu", message); ///sprosit' pochemy tak mnogo console.log kogda input dlennee chem 1 esli ne obernuto v useCallback
     },
     [sendMessage]
   );
