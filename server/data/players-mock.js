@@ -91,34 +91,209 @@ module.exports = {
       y: 300,
       color: "#ECE3CE",
     },
-    // {
-    //   id: null,
-    //   name: "Frogy",
-    //   x: null,
-    //   y: null,
-    //   color: "#B3C99C",
-    // },
+    {
+      id: null,
+      name: "Rock",
+      x: 700,
+      y: 300,
+      color: "#A1A3A8",
+    },
+    {
+      id: null,
+      name: "Pinkie",
+      x: 1100,
+      y: 300,
+      color: "#FFCCFF",
+    },
+    {
+      id: null,
+      name: "Forest",
+      x: 700,
+      y: 32,
+      color: "#65A2AC",
+    },
+    {
+      id: null,
+      name: "Greenie",
+      x: 1100,
+      y: 32,
+      color: "#8EBF78",
+    },
+    {
+      id: null,
+      name: "Violet",
+      x: 1100,
+      y: 100,
+      color: "#874A97",
+    },
+    {
+      id: null,
+      name: "Cyanie",
+      x: 1100,
+      y: 300,
+      color: "#8EE5EE",
+    },
+    {
+      id: null,
+      name: "Night",
+      x: 1100,
+      y: 500,
+      color: "#0F2D4C",
+    },
+    {
+      id: null,
+      name: "Pepa",
+      x: 1100,
+      y: 700,
+      color: "#ECC0C9",
+    },
+    {
+      id: null,
+      name: "Frogy",
+      x: 1100,
+      y: 1100,
+      color: "#B3C99C",
+    },
+    {
+      id: null,
+      name: "Tea",
+      x: 1168,
+      y: 1100,
+      color: "#B5838D",
+    },
+    {
+      id: null,
+      name: "Light",
+      x: 1100,
+      y: 1168,
+      color: "#FFF3B0",
+    },
+    {
+      id: null,
+      name: "Fair",
+      x: 1168,
+      y: 100,
+      color: "#F1FAEE",
+    },
+    {
+      id: null,
+      name: "Caramel",
+      x: 1168,
+      y: 200,
+      color: "#DDB892",
+    },
+    {
+      id: null,
+      name: "Navy",
+      x: 1168,
+      y: 300,
+      color: "#3d5a80",
+    },
+    {
+      id: null,
+      name: "Taupe",
+      x: 1168,
+      y: 400,
+      color: "#bcb8b1",
+    },
+    {
+      id: null,
+      name: "Kiss",
+      x: 1168,
+      y: 500,
+      color: "#d62828",
+    },
+    {
+      id: null,
+      name: "Grumpie",
+      x: 1168,
+      y: 600,
+      color: "#5c677d",
+    },
+    {
+      id: null,
+      name: "Dreamie",
+      x: 1168,
+      y: 700,
+      color: "#fcd5ce",
+    },
+    {
+      id: null,
+      name: "Energy",
+      x: 1168,
+      y: 800,
+      color: "#dddf00",
+    },
+    {
+      id: null,
+      name: "Happy",
+      x: 1168,
+      y: 900,
+      color: "#fcf6bd",
+    },
+    {
+      id: null,
+      name: "Minty",
+      x: 1168,
+      y: 1000,
+      color: "#b0c4b1",
+    },
+    {
+      id: null,
+      name: "Swelly",
+      x: 100,
+      y: 1168,
+      color: "#e7c6ff",
+    },
+    {
+      id: null,
+      name: "Swelly",
+      x: 100,
+      y: 1168,
+      color: "#e7c6ff",
+    },
+    {
+      id: null,
+      name: "Chika",
+      x: 200,
+      y: 1168,
+      color: "#ff006e",
+    },
+    {
+      id: null,
+      name: "Barbie",
+      x: 300,
+      y: 1168,
+      color: "#fb6f92",
+    },
+    {
+      id: null,
+      name: "Leo",
+      x: 400,
+      y: 1168,
+      color: "#ffc300",
+    },
+    {
+      id: null,
+      name: "Greyii",
+      x: 500,
+      y: 1168,
+      color: "#6c757d",
+    },
+    {
+      id: null,
+      name: "Fav",
+      x: 600,
+      y: 1168,
+      color: "#eb5e28",
+    },
+    {
+      //num: 40,
+      id: null,
+      name: "Wise",
+      x: 700,
+      y: 1168,
+      color: "#9d8189",
+    },
   ],
 };
-
-///idea: color run (because infected circle loses it's color);
-
-/* main colors: 
-{
-  color: #EDB7ED; pink +
-  color: #82A0D8; blue +
-  color: #D0F5BE; lime +
-  color: #ECEE81;  sunny +
-  #FF8080 redish 
-  #FF6969 cherry2 +
-  #FFCF96 peachy +
-  #D6C7AE latte +
-  #967E76 brownie + 
-  #F9B572 pumpkin +
-  #FFDDCC peachy +
-  #89CFF3 wavy + 
-  #C58940 coockie +
-  #B3C99C frogy +
-  #C05555 poco + 
-  #ECE3CE milky +
-} */
